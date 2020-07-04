@@ -1,0 +1,7 @@
+name: GCPickEnchantz
+version: 0.1
+description: Custom Pickaxe enchants.
+author: tpg01
+website: http://guildcraft.org
+main: net.guildcraft.gcpickenchantz.GCPickEnchantz
+depend: [currency]
