@@ -1,0 +1,4 @@
+prefix: "&f[&bPrison&f] &7"
+purchase-complete: "&7You &asuccessfully &7purchased this upgrade for a total of &b%cost% &7tokens."
+purchase-failure-cost: "&7You need &b%cost% &7tokens to complete this purchase."
+purchase-cancelled: "&7You have &ccancelled &7this purchase."

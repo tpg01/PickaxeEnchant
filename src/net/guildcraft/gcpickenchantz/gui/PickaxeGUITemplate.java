@@ -23,9 +23,9 @@ public abstract class PickaxeGUITemplate {
     private Map<Integer, PickaxeGUIAction> actions;
     private UUID uuid;
 
-    public PickaxeGUITemplate(int rows) {
+    public PickaxeGUITemplate(int rows,String invname) {
         uuid = UUID.randomUUID();
-        inventory = Bukkit.createInventory(null, 9 * rows, "Custom Enchants");
+        inventory = Bukkit.createInventory(null, 9 * rows, invname);
 
         actions = new HashMap<>();
         inventoriesByUUID.put(getUUID(), this);

@@ -14,7 +14,7 @@ public class PickaxeGUI extends PickaxeGUITemplate {
     private ItemStack pickaxe;
 
     public PickaxeGUI(ItemStack pickaxe) {
-        super(3);
+        super(3, ChatColor.translateAlternateColorCodes('&', "&f&nUpgrade Manager"));
         this.pickaxe = pickaxe;
         initializeItems();
 
@@ -24,7 +24,7 @@ public class PickaxeGUI extends PickaxeGUITemplate {
         setItem(4, pickaxe);
 
         ItemStack efficiency = createGuiItem(Material.ENCHANTED_BOOK,
-                ChatColor.GREEN + "Upgrade Efficiency",
+                ChatColor.translateAlternateColorCodes('&', "&bEfficiency"),
                 ChatColor.WHITE + "Level " + String.valueOf(pickaxe.getEnchantmentLevel(Enchantment.DIG_SPEED)) + " to " + String.valueOf(pickaxe.getEnchantmentLevel(Enchantment.DIG_SPEED) + 1),
                 ChatColor.YELLOW + "Cost: " + GCPickEnchantz.getInstance().getConfig().getInt("costs.efficiency." + (pickaxe.getEnchantmentLevel(Enchantment.DIG_SPEED) + 1)) + " tokens");
 
