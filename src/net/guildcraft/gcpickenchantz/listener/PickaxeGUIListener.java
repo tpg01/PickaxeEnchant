@@ -2,6 +2,7 @@ package net.guildcraft.gcpickenchantz.listener;
 
 import net.guildcraft.gcpickenchantz.gui.PickaxeGUI;
 import net.guildcraft.gcpickenchantz.gui.PickaxeGUITemplate;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,10 +20,13 @@ public class PickaxeGUIListener implements Listener {
 
         if (!(e.getWhoClicked() instanceof Player)) return;
 
+
         Player player = (Player) e.getWhoClicked();
 
         UUID playerUUID = player.getUniqueId();
         UUID inventoryUUID = PickaxeGUI.openInventories.get(playerUUID);
+
+
 
         if (inventoryUUID != null) {
 
@@ -30,7 +34,12 @@ public class PickaxeGUIListener implements Listener {
             PickaxeGUITemplate gui = PickaxeGUITemplate.getInventoriesByUUID().get(inventoryUUID);
             PickaxeGUI.PickaxeGUIAction action = gui.getActions().get(e.getSlot());
 
-            if (action != null) action.click(player);
+            if(e.getClickedInventory() != player.getOpenInventory().getTopInventory()) return;
+
+            if (action != null) {
+                action.click(player);
+
+            }
 
         }
 

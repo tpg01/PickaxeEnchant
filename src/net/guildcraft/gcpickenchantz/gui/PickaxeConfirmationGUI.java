@@ -4,17 +4,27 @@ import net.guildcraft.gcpickenchantz.GCPickEnchantz;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.guildcraft.currency.Currency;
 import org.guildcraft.currency.utilities.CurrencyManager;
+
+import java.util.ArrayList;
 
 public class PickaxeConfirmationGUI extends PickaxeGUITemplate {
 
     private int cost;
+    private String enchanttype;
+    private String upgrade;
 
-    public PickaxeConfirmationGUI (int cost, ConfirmedAction action) {
+    public PickaxeConfirmationGUI (int cost, String enchanttype, String upgrade, ConfirmedAction action) {
         super(1, ChatColor.translateAlternateColorCodes('&', "&f&nConfirmation Manager"));
         this.cost = cost;
+        this.enchanttype = enchanttype;
+        this.upgrade = upgrade;
 
         //Lime stained pane
         for (int column = 0; column < 4; column++) {
@@ -32,7 +42,7 @@ public class PickaxeConfirmationGUI extends PickaxeGUITemplate {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                             GCPickEnchantz.getInstance().getLang().getString("prefix") +
                                     GCPickEnchantz.getInstance().getLang().getString("purchase-failure-cost").replace("%cost%", String.valueOf(cost))));
-                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1, 1);
+                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1, 1);
 
                 }
 
@@ -40,16 +50,29 @@ public class PickaxeConfirmationGUI extends PickaxeGUITemplate {
             });
 
         }
-        setItem(4, createGuiItem(Material.DIAMOND_PICKAXE, (byte) 0,
-                ChatColor.translateAlternateColorCodes('&', "&a&nAre you sure?"),
-                "",
-                ChatColor.translateAlternateColorCodes('&', "&b&l● &7Cost: &b" + cost + " &7tokens"),
-                ChatColor.translateAlternateColorCodes('&', "&b&l● &7Upgrade: &b%Enchant% &8[&a+1&8]"),
-                "",
-                ChatColor.translateAlternateColorCodes('&', "&c&lWarning: &fAll upgrades are irreversible, once completing"),
-                ChatColor.translateAlternateColorCodes('&', "&fthis action there is no way of getting a refund."),
-                "",
-                ChatColor.translateAlternateColorCodes('&', "&b&l→ &7Click yes to complete this purchase.")));
+        final ItemStack ref1 = new ItemStack(Material.DIAMOND_PICKAXE, 1);
+        ItemMeta metaref1 = ref1.getItemMeta();
+        ArrayList<String> lore = new ArrayList<String>();
+        metaref1.addEnchant(Enchantment.DURABILITY, 1, true);
+        metaref1.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+        lore.add(ChatColor.translateAlternateColorCodes('&', ""));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&b&l● &7Cost: &b" + cost + " &7tokens"));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&b&l● &7Upgrade: &b"+enchanttype+" &8[&a+1&8]"));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&b&l● &7New Level: &b"+upgrade));
+        lore.add(ChatColor.translateAlternateColorCodes('&', ""));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&c&lWarning: &fAll upgrades are irreversible, once completing"));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&fthis action there is no way of getting a refund."));
+        lore.add(ChatColor.translateAlternateColorCodes('&', ""));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&b&l→ &7Click yes to complete this purchase."));
+
+
+        metaref1.setLore(lore);
+        metaref1.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&f&nAre you sure?"));
+
+
+        ref1.setItemMeta(metaref1);
+        getInventory().setItem(4, ref1);
 
         //Red stained pane
         for (int column = 5; column < 9; column++) {
@@ -58,7 +81,7 @@ public class PickaxeConfirmationGUI extends PickaxeGUITemplate {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         GCPickEnchantz.getInstance().getLang().getString("prefix") +
                                 GCPickEnchantz.getInstance().getLang().getString("purchase-cancelled")));
-                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1, 1);
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1, 1);
                 delete();
             });
 

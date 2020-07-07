@@ -4,8 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
 import org.bukkit.Material;
 import org.bukkit.Note;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -77,8 +79,23 @@ public abstract class PickaxeGUITemplate {
         }
     }
 
+    public void setPickaxe(int slot, ItemStack stack, PickaxeGUIAction action){
+        inventory.setItem(slot, stack);
+        if (action != null){
+            actions.put(slot, action);
+        }
+    }
+
     public void setItem(int slot, ItemStack stack){
         setItem(slot, stack, null);
+    }
+
+    public void setPickaxe(int slot){
+        ItemStack pick = new ItemStack(Material.DIAMOND_PICKAXE);
+        ItemMeta pickmeta = pick.getItemMeta();
+        pickmeta.addEnchant(Enchantment.DURABILITY, 1, true);
+        pickmeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        setItem(slot, pick, null);
     }
 
     public void open(Player player) {
@@ -112,5 +129,41 @@ public abstract class PickaxeGUITemplate {
         }
         inventoriesByUUID.remove(getUUID());
     }
+
+    protected ItemStack createEnchantedGuiItem(final Material material, final String name, final String... lore) {
+        final ItemStack item = new ItemStack(material, 1);
+        final ItemMeta meta = item.getItemMeta();
+
+        // Set the name of the item
+        meta.setDisplayName(name);
+
+        // Set the lore of the item
+        meta.setLore(Arrays.asList(lore));
+        meta.addEnchant(Enchantment.DURABILITY, 1, false);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+    protected ItemStack createEnchantedGuiItem(final Material material, byte subId, final String name, final String... lore) {
+        final ItemStack item = new ItemStack(material, 1, subId);
+        final ItemMeta meta = item.getItemMeta();
+
+        // Set the name of the item
+        meta.setDisplayName(name);
+
+        // Set the lore of the item
+        meta.setLore(Arrays.asList(lore));
+        meta.addEnchant(Enchantment.DURABILITY, 1, false);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+
 
 }
