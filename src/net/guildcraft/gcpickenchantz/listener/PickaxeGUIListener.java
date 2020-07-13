@@ -1,5 +1,6 @@
 package net.guildcraft.gcpickenchantz.listener;
 
+import net.guildcraft.gcpickenchantz.GCPickEnchantz;
 import net.guildcraft.gcpickenchantz.gui.PickaxeGUI;
 import net.guildcraft.gcpickenchantz.gui.PickaxeGUITemplate;
 import org.bukkit.Bukkit;
@@ -58,5 +59,4 @@ public class PickaxeGUIListener implements Listener {
         UUID playerUUID = player.getUniqueId();
         PickaxeGUI.openInventories.remove(playerUUID);
     }
-
 }

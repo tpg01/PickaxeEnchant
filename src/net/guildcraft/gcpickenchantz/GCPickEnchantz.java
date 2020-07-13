@@ -3,15 +3,18 @@ package net.guildcraft.gcpickenchantz;
 import net.guildcraft.gcpickenchantz.listener.PickaxeGUIListener;
 import net.guildcraft.gcpickenchantz.listener.PickaxeListener;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.milkbowl.vault.chat.Chat;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class GCPickEnchantz extends JavaPlugin {
@@ -21,11 +24,11 @@ public class GCPickEnchantz extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        createLogFile();
         createLangFile();
         Bukkit.getServer().getPluginManager().registerEvents(new PickaxeListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PickaxeGUIListener(), this);
         saveDefaultConfig();
-
     }
 
     @Override
@@ -77,4 +80,42 @@ public class GCPickEnchantz extends JavaPlugin {
             e.printStackTrace();
         }
     }
+
+    public File LogFile;
+    public FileConfiguration LogConfig;
+
+    public FileConfiguration getLogFile() {
+        return this.LogConfig;
+    }
+
+    public void reloadLogFile() {
+        LogConfig = YamlConfiguration.loadConfiguration(LogFile);
+        Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[GCPickaxeEnchant] logger.yml was reloaded successfully");
+    }
+
+    public void saveLogFile() {
+        try {
+            LogConfig.save(LogFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createLogFile() {
+        LogFile = new File(getDataFolder(), "logger.yml");
+        if (!LogFile.exists()) {
+            LogFile.getParentFile().mkdirs();
+            Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "[GCPickaxeEnchant] logger.yml was created successfully");
+            saveResource("logger.yml", false);
+        }
+
+        LogConfig = new YamlConfiguration();
+        try {
+            LogConfig.load(LogFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

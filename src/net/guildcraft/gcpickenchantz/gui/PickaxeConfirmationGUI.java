@@ -1,6 +1,7 @@
 package net.guildcraft.gcpickenchantz.gui;
 
 import net.guildcraft.gcpickenchantz.GCPickEnchantz;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -12,13 +13,23 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.guildcraft.currency.Currency;
 import org.guildcraft.currency.utilities.CurrencyManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class PickaxeConfirmationGUI extends PickaxeGUITemplate {
 
     private int cost;
     private String enchanttype;
     private String upgrade;
+
+    //Dates
+    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+    Date date = new Date(System.currentTimeMillis());
+
+    SimpleDateFormat formatter2 = new SimpleDateFormat("HH:mm:ss");
+    Date time = new Date(System.currentTimeMillis());
 
     public PickaxeConfirmationGUI (int cost, String enchanttype, String upgrade, ConfirmedAction action) {
         super(1, ChatColor.translateAlternateColorCodes('&', "&f&nConfirmation Manager"));
@@ -37,6 +48,14 @@ public class PickaxeConfirmationGUI extends PickaxeGUITemplate {
                             GCPickEnchantz.getInstance().getLang().getString("purchase-complete").replace("%cost%", String.valueOf(cost))));
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
                     action.confirm();
+                    GCPickEnchantz.getInstance().getLogFile().set(formatter.format(date) + "." +player.getName() + "." +formatter2.format(time)
+                            + ".Upgrade" +".Enchantment", enchanttype);
+                    GCPickEnchantz.getInstance().getLogFile().set(formatter.format(date) + "." +player.getName() + "." +formatter2.format(time)
+                            + ".Upgrade" +".New-Level", upgrade);
+                    GCPickEnchantz.getInstance().getLogFile().set(formatter.format(date) + "." +player.getName() + "." +formatter2.format(time)
+                            + ".Upgrade" +".Cost", cost +" Tokens");
+
+                    GCPickEnchantz.getInstance().saveLogFile();
                 } else {
 
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&',

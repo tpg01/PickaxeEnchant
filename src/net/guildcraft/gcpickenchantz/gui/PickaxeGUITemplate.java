@@ -1,9 +1,7 @@
 package net.guildcraft.gcpickenchantz.gui;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Instrument;
-import org.bukkit.Material;
-import org.bukkit.Note;
+import net.guildcraft.gcpickenchantz.GCPickEnchantz;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -15,6 +13,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.bukkit.Material.*;
 
 public abstract class PickaxeGUITemplate {
 
@@ -91,7 +92,7 @@ public abstract class PickaxeGUITemplate {
     }
 
     public void setPickaxe(int slot){
-        ItemStack pick = new ItemStack(Material.DIAMOND_PICKAXE);
+        ItemStack pick = new ItemStack(DIAMOND_PICKAXE);
         ItemMeta pickmeta = pick.getItemMeta();
         pickmeta.addEnchant(Enchantment.DURABILITY, 1, true);
         pickmeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -165,5 +166,22 @@ public abstract class PickaxeGUITemplate {
     }
 
 
+    public void RepairPickaxe(Player player) {
+        ItemStack hand = player.getInventory().getItemInMainHand();
 
-}
+        if((!hand.getType().equals(DIAMOND_PICKAXE)) && (!hand.getType().equals(IRON_PICKAXE)) && (!hand.getType().equals(STONE_PICKAXE)) &&
+        (!hand.getType().equals(WOOD_PICKAXE)) && (!hand.getType().equals(GOLD_PICKAXE))) {
+            return;
+
+        }
+        Integer level = hand.getEnchantmentLevel(Enchantment.DIG_SPEED);
+
+        AtomicInteger i = new AtomicInteger(0);
+
+        Integer price = GCPickEnchantz.getInstance().getConfig().getInt("Repair-Prices." + "Pickaxe." + level);
+
+        }
+
+
+    }
+
